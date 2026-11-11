@@ -1,9 +1,10 @@
+
 from abc import ABC, abstractmethod
 from src.domain.entities.aluno import Aluno
 
 
 class AlunoRepository(ABC):
-    """Contrato (Interface) para persistência e recuperação de Alunos."""
+    """Contrato para persistência e recuperação de alunos."""
 
     @abstractmethod
     def salvar(self, aluno: Aluno) -> Aluno:
@@ -11,6 +12,10 @@ class AlunoRepository(ABC):
 
     @abstractmethod
     def listar_todos(self) -> list[Aluno]:
+        pass
+
+    @abstractmethod
+    def buscar_por_id(self, aluno_id: int) -> Aluno | None:
         pass
 
     @abstractmethod

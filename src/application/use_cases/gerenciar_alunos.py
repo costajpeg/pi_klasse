@@ -1,3 +1,4 @@
+
 import re
 from src.application.interfaces.aluno_repository import AlunoRepository
 from src.domain.entities.aluno import Aluno
@@ -18,7 +19,7 @@ def normalizar_data(data_str: str) -> str:
 
 
 class CadastrarAlunoUseCase:
-    """Caso de uso para registrar um novo aluno no sistema conforme as tabelas do banco."""
+    """Caso de uso para registrar um novo aluno."""
     def __init__(self, aluno_repo: AlunoRepository):
         self.aluno_repo = aluno_repo
 
@@ -28,7 +29,8 @@ class CadastrarAlunoUseCase:
         serie: str,
         matricula: str = "",
         cpf: str = "",
-        data_nascimento: str = ""
+        data_nascimento: str = "",
+        tem_laudo: bool = False
     ) -> Aluno:
         nome_limpo = (nome or "").strip()
         if not nome_limpo:
@@ -40,7 +42,6 @@ class CadastrarAlunoUseCase:
 
         novo_id = self.aluno_repo.proximo_id()
 
-        # Garante valores válidos para restrições NOT NULL e UNIQUE do banco
         mat_limpa = (matricula or "").strip()
         if not mat_limpa:
             mat_limpa = f"ALU{novo_id:04d}"
@@ -57,8 +58,10 @@ class CadastrarAlunoUseCase:
             matricula=mat_limpa,
             cpf=cpf_limpo,
             data_nascimento=dt_nasc,
-            id=novo_id
+            id=novo_id,
+            tem_laudo=tem_laudo
         )
+
         return self.aluno_repo.salvar(aluno)
 
 
